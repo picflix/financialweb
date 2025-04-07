@@ -1084,7 +1084,7 @@
     .reset-form {
       display: flex;
       flex-direction: column;
-      gap: 20px;
+      gap: 50px;
       width: 100%;
       align-items: right;
     }
