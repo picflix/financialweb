@@ -920,7 +920,6 @@
       border-bottom: 1px solid rgba(255, 255, 255, 0.1);
       overflow: hidden;
       animation: fadeIn 0.8s cubic-bezier(0.39, 0.575, 0.565, 1);
-      text-align: center;
     }
     
     .auth-container::before {
@@ -949,7 +948,7 @@
       display: flex;
       flex-direction: column;
       gap: 25px;
-      align-items: left;
+      align-items: center;
       z-index: 10;
     }
     
@@ -961,23 +960,18 @@
       margin-bottom: 20px;
       text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
       position: relative;
-      text-align: center;
       background: linear-gradient(to right, #fff, #c1c8ff);
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
+      text-align: center;
+      width: 100%;
+      padding-bottom: 0;
     }
     
+    /* Remove the ::after pseudo-element that created the gradient line */
     .auth-form h2::after {
-      content: '';
-      position: absolute;
-      bottom: -10px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 80px;
-      height: 4px;
-      background: linear-gradient(90deg, #4cc9f0, #4895ef);
-      border-radius: 3px;
+      display: none;
     }
     
     .inputBx {
@@ -1092,7 +1086,7 @@
       flex-direction: column;
       gap: 20px;
       width: 100%;
-      align-items: left;
+      align-items: center;
     }
     
     .reset-form h3 {
@@ -1647,6 +1641,7 @@
         padding: 20px;
       }
       
+      /* Auth page responsive adjustments */
       .auth-container {
         width: 90%;
         padding: 40px 20px;
@@ -1654,6 +1649,16 @@
       
       .auth-form h2 {
         font-size: 2rem;
+      }
+      
+      .inputBx input {
+        padding: 12px 20px;
+      }
+      
+      .links {
+        flex-direction: column;
+        gap: 10px;
+        align-items: center;
       }
       
       .sidebar {
