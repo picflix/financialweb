@@ -964,7 +964,7 @@
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
-      text-align: right;
+      text-align: center;
       width: 100%;
       padding-bottom: 0;
     }
