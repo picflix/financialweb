@@ -964,7 +964,7 @@
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
-      text-align: center;
+      text-align: right;
       width: 100%;
       padding-bottom: 0;
     }
@@ -1086,7 +1086,7 @@
       flex-direction: column;
       gap: 20px;
       width: 100%;
-      align-items: center;
+      align-items: right;
     }
     
     .reset-form h3 {
