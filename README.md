@@ -656,7 +656,7 @@
       left: -100%;
       width: 100%;
       height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
       transition: all 0.6s ease;
     }
     
@@ -952,6 +952,7 @@
       z-index: 10;
     }
     
+    /* FIXED: Centered auth form headings */
     .auth-form h2 {
       color: #fff;
       font-size: 2.5rem;
@@ -967,11 +968,45 @@
       text-align: center;
       width: 100%;
       padding-bottom: 0;
+      left: 0;
+      transform: none;
+      display: block;
     }
     
     /* Remove the ::after pseudo-element that created the gradient line */
     .auth-form h2::after {
       display: none;
+    }
+    
+    /* FIXED: Centered reset form headings */
+    .reset-form h2 {
+      color: #fff;
+      font-size: 2.5rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      margin-bottom: 20px;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+      position: relative;
+      background: linear-gradient(to right, #fff, #c1c8ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-align: center;
+      width: 100%;
+      padding-bottom: 0;
+      left: 0;
+      transform: none;
+      display: block;
+    }
+    
+    .reset-form h3 {
+      color: #fff;
+      text-align: center;
+      margin-bottom: 15px;
+      font-weight: 300;
+      letter-spacing: 1px;
+      font-size: 1.1rem;
+      width: 100%;
     }
     
     .inputBx {
@@ -1087,16 +1122,6 @@
       gap: 20px;
       width: 100%;
       align-items: center;
-    }
-    
-    .reset-form h3 {
-      color: #fff;
-      text-align: center;
-      margin-bottom: 15px;
-      font-weight: 300;
-      letter-spacing: 1px;
-      font-size: 1.1rem;
-      width: 100%;
     }
     
     .reset-steps {
@@ -2377,30 +2402,36 @@
         const income = document.getElementById("monthly-income").value;
         const expenses = document.getElementById("expenses").value;
         
+        // Don't save empty drafts
         if (!income && !expenses) return;
         
+        // Initialize drafts array if it doesn't exist
         if (!users[username].drafts) {
           users[username].drafts = [];
         }
         
-        users[username].drafts.push({
-          income: income,
-          expenses: expenses,
-          timestamp: getCurrentTimestamp()
-        });
+        // Check if the current data is different from the last saved draft
+        const lastDraft = users[username].drafts.length > 0 ? 
+          users[username].drafts[users[username].drafts.length - 1] : null;
         
-        // Keep only the last 5 drafts
-        if (users[username].drafts.length > 5) {
-          users[username].drafts = users[username].drafts.slice(-5);
+        if (!lastDraft || lastDraft.income !== income || lastDraft.expenses !== expenses) {
+          // Add new draft
+          users[username].drafts.push({
+            income: income,
+            expenses: expenses,
+            timestamp: getCurrentTimestamp()
+          });
+          
+          // Keep only the last 5 drafts
+          if (users[username].drafts.length > 5) {
+            users[username].drafts = users[username].drafts.slice(-5);
+          }
+          
+          localStorage.setItem('financeUsers', JSON.stringify(users));
+          logActivity('SAVED_DRAFT');
         }
-        
-        localStorage.setItem('financeUsers', JSON.stringify(users));
-        logActivity('SAVED_DRAFT');
       }
     }
-    
-    // Auto-save draft every 2 minutes
-    setInterval(saveDraft, 120000);
     
     // -------------------------------------------------------
     // UTILITY FUNCTIONS
@@ -2847,6 +2878,11 @@
         income: income,
         expenses: expenses
       });
+      
+      // Save as draft if there's data
+      if (income || expenses) {
+        saveDraft();
+      }
     }
     
     function parseExpenseData(expensesInput) {
